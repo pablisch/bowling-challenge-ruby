@@ -21,10 +21,10 @@ class Game
   def scores_on_the_doors
     frames.each_with_index do |frame, index|
       frame_score, bonus = 0, 0
-      if frame == frames[-1] # last frame
-        frame_score = last_frame_scoring(frame, frame_score)
-      else
+      if @frame_number < 10 # NOT last frame
         frame_score = frame_scoring(frame, index, frame_score)
+      else
+        frame_score = last_frame_scoring(frame, frame_score)
       end
       @total_score += frame_score
       unless frame == frames[-1] && @game_scores.length.odd? # unless last frame with a strike
