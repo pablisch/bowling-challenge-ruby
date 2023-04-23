@@ -4,24 +4,60 @@ require_relative 'lib/game.rb'
 class Application
   def initialize(io)
     @io = io
+    @game = Game.new
+    @frame = Frame.new
   end
 
   def run
     @game = Game.new
-    3.times do
+    9.times do # all but last frame
       @frame = Frame.new
-      visibility_frame_number() # VISIBILITY
       pins_down = roll(1)
+      @game.add_to_scores(@frame.roll_1_pins)
       pins_down = roll(2) if pins_down < 10
-      visibility_after_rolls() # VISIBILITY
+      @game.add_to_scores(@frame.roll_2_pins)
       @game.add_frame(@frame)
-      visibility_game_and_frame()
     end
+    final_frame()
     @game.scores_on_the_doors()
   end
 
+  def final_frame
+    @frame = Frame.new
+    pins_down = roll(1)
+    @game.add_to_scores(@frame.roll_1_pins)
+    if pins_down == 10 # if roll 1 is a strike
+      last_frame_strike(pins_down)
+    else # Take 2nd roll at remaining pins
+      last_frame_no_strike(pins_down)
+    end
+    @game.add_frame(@frame)
+  end
+
+  def last_frame_strike(pins_down)
+    pins_down = roll(1)
+    @game.add_to_scores(@frame.roll_1_pins)
+    if pins_down == 10 # if roll 2 is a strike, take last roll, new pins
+      pins_down = roll(1)
+      @game.add_to_scores(@frame.roll_1_pins)
+    else # if roll 2 is not a strike, take last roll
+      pins_down = roll(2)
+      @game.add_to_scores(@frame.roll_2_pins)
+    end
+  end
+
+  def last_frame_no_strike(pins_down)
+    pins_down = roll(2)
+    @game.add_to_scores(@frame.roll_2_pins)
+    if @frame.spare_bonus == true
+      pins_down = roll(1)
+      @game.add_to_scores(@frame.roll_1_pins)
+    end
+  end
+
   def roll(roll_number)
-    pins_down = ask("Enter number of pins knocked down for roll #{roll_number}: ").to_i
+    @io.puts "Frame #{@game.frame_number} roll #{roll_number} pins knocked over: "
+    pins_down = @io.gets.chomp.to_i
     roll_manager(roll_number, pins_down)
     return pins_down
   end
@@ -34,42 +70,6 @@ class Application
     end
     return pins_down
   end
-
-  ### HELPER METHODS
-
-  def visibility_frame_number ### TEST METHOD FOR VISIBILITY
-    puts "This is frame #{@game.frame_number() + 1}"
-  end
-
-  def visibility_after_rolls ### TEST METHOD FOR VISIBILITY
-    puts "strike_bonus_1 is #{@frame.strike_bonus_1}"
-    puts "strike_bonus_2 is #{@frame.strike_bonus_2}"
-    puts "spare_bonus is #{@frame.spare_bonus}"
-    puts "roll 1 was #{@frame.roll_1_pins}"
-    puts "roll 2 was #{@frame.roll_2_pins}"
-  end
-
-  def visibility_game_and_frame ### TEST METHOD FOR VISIBILITY
-    print "game is "
-    p @game
-    print "frame is "
-    p @frame
-  end
-
-  def say(message)
-    @io.puts(message)
-  end
-
-  def ask(question)
-    @io.puts(question)
-    @io.gets.chomp
-  end
-
-  def ask_inline(question)
-    @io.print(question)
-    @io.gets.chomp
-  end
-
 end
 
 if __FILE__ == $0

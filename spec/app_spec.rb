@@ -6,14 +6,26 @@ RSpec.describe Application do
 
   let(:io) { double(:io) }
   let(:app) { Application.new(io) }
-  let(:game) { Game.new(io) }
-  let(:frame) { Frame.new(io) }
+  let(:game) { Game.new }
+  let(:frame) { Frame.new }
 
-  context "App #pin_1" do
-    it "user inputs the number of pins hit" do
-      expect(io).to receive(:puts).with("Enter number of pins knocked down for roll 1: ")
-      expect(io).to receive(:gets).and_return("5").ordered
-      app.roll(1)
+  describe "#roll" do
+    context "when given a valid input" do
+      it "returns the number of pins knocked over for roll 1" do
+        allow(io).to receive(:puts).with('Frame 1 roll 1 pins knocked over: ')
+        allow(io).to receive(:gets).and_return("5\n")
+        expect(app.roll(1)).to eq(5)
+      end
+
+      it "returns the number of pins knocked over for roll 1" do
+        allow(io).to receive(:puts).with('Frame 1 roll 1 pins knocked over: ')
+        allow(io).to receive(:gets).and_return("5\n")
+        expect(app.roll(1)).to eq(5)
+        allow(io).to receive(:puts).with('Frame 1 roll 2 pins knocked over: ')
+        allow(io).to receive(:gets).and_return("4\n")
+        expect(app.roll(2)).to eq(4)
+      end
     end
   end
 end
+
