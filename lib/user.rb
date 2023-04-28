@@ -24,10 +24,6 @@ class User
     puts "Pins down for frame #{frame} roll #{roll}?"
     return gets.chomp.to_i
   end
-
-  # def score(score)
-  #   puts "\nYou scored #{score} points!"
-  # end
   
   def score(game)
     game.scores()

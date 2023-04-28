@@ -6,7 +6,9 @@ class Frame
   end
 
   def add_roll(pins)
+    p "HEELO RSPEC!"
     @frame_points << pins # if @frame_points.length == 0
+    # p @frame_points
   end
 
   def strike?

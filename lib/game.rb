@@ -13,7 +13,7 @@ class Game
     @roll_again = true
   end
 
-  def add_roll(pins)
+  def add_roll(pins) # main game logic
 
     if @frames.length == 9 #### Do FINAL FRAME STUFF
       puts "FINAL FRAME!"
