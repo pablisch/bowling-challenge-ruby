@@ -1,4 +1,4 @@
-require_relative './user'
+# require_relative './user'
 require_relative './frame'
 require_relative './score'
 
@@ -7,49 +7,76 @@ class Game
   attr_reader :in_progress
 
   def initialize
-    @user = User.new
+    @frame = Frame.new
     @frames = []
+    # p @frames
+    @roll_again = true
   end
 
-  def run
-    until @frames.length >= 9 # set to 9 for TEN FRAME GAME
-      frame_number = @frames.length + 1 # used for UI message
-      frame = Frame.new
-      frame.roll_1(@user.roll(frame_number, 1)) # roll 1
-      frame.roll_2(@user.roll(frame_number, 2)) unless frame.strike # roll 2
-      @frames << frame # add current frame object to frames array
-    end
-    
-    final_frame()
-    score = Score.new(@frames)
-    @user.score(score.score) # calculate score and send to user
-    # @user == User Interface object
-    # @user.score is the method that outputs the final score
-    # with an argument which is the score method of the Score object
-  end
-  
-  def final_frame
-    frame_number = @frames.length + 1
-    frame = Frame.new
-    frame.roll_1(@user.roll(frame_number, 1)) # r1 
-    if frame.strike # r1 is a strike
-      frame.strike = false
-      frame.roll_2_final_after_strike(@user.roll(frame_number, 2)) # r2 if r1 was a strike
-      if frame.strike # r2 is a strike
-        frame.roll_3_after_strike_or_spare(@user.roll(frame_number, 3)) # r3 after 2nd strike
-      else # r2 is NOT a strike
-        frame.roll_3(@user.roll(frame_number, 3)) # roll 3 when 1st was strike but 2nd was NOT
+  def add_roll(pins)
+
+    if @frames.length == 9 #### Do FINAL FRAME STUFF
+      puts "FINAL FRAME!"
+      @frame.add_roll(pins) # add roll 1 to this frame
+      if @frame.length == 2 
+        end_game() unless @frame.strike?
+      elsif @frame.length == 3
+        end_game()
       end
+      
+    elsif @frame.length == 0 ## IF roll 1...
+      @frame.add_roll(pins) # add roll 1 to this frame
 
-    else # r1 is NOT a strike
-      frame.roll_2(@user.roll(frame_number, 2)) # standard r2
-      frame.roll_3_after_strike_or_spare(@user.roll(frame_number, 3)) if frame.spare # bonus roll after spare
+      if @frame.strike? ## IF roll 1 is strike...
+        @frame.add_roll(0) # add roll 2 to this frame as 0 pins
+        @frame = new_frame() # add frame to frames and make new frame
+      end
+    else @frame.add_roll(pins) # add roll 2 to this frame
+      @frame = new_frame() # add frame to frames and make new frame
     end
-    @frames << frame
+    # print "frame = " # VISIBILTY
+    # p @frame # VISIBILTY
+    # print "frame = " # VISIBILTY
+    # p @frame # VISIBILTY
+    
+    # below adds frame to frames and makes a new frame
+    # if pins == 10 
+    #   @frame = new_frame()
+    # # elsif 
+    # end
+    @frames.each_with_index do |frame, index| 
+    end
   end
-end
 
-if __FILE__ == $0
-  game = Game.new
-  game.run
+  def new_frame
+    @frames << @frame
+    Frame.new
+  end
+
+  def end_game
+    @frames << @frame
+    @roll_again = false
+  end
+
+  def roll_again?
+    return @roll_again
+  end
+
+  def strike?
+    return false if @frames.length == 9 && @frame.length > 0 # false for last frame
+    puts "first roll strike!" if @frames.length == 0 || @frame.length > 0
+    return true if @frames.length == 0 || @frame.strike? # first roll strike
+    puts "no rolls strike warning!" if @frames.length == 0 || @frame.length > 0
+    return false if @frames.length == 0 || @frame.length > 0 # no rolls have happened yet so no enquiry possible
+    @frames[-1].strike?
+  end
+
+  def bonus_roll
+    @frames.length == 9 && @frame.length > 0 && @frame.frame_points[0] == 10
+  end
+
+  def scores
+    score = Score.new(@frames)
+    score.calculate_scores()
+  end
 end
