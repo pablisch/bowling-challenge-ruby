@@ -1,4 +1,25 @@
-Bowling Challenge in Ruby
+# Ruby Bowling Challenge
+
+## Makers Academy Week 5 Weekend Challenge
+
+This is the final Ruby challenge of the Makers Software Engineering course. The challenge is to write a program that can calculate the score of a bowling game for one player. The program should be able to handle all the rules of bowling, including strikes and spares.
+
+This is an unfinished individual challenge. I made the decision to focus on other aspects of the course and not to complete this challenge. I have included the Makers brief below.
+
+## Getting Started
+
+### Installation  
+
+1. Clone this repo to your local machine.
+2. Run the command `bundle install` to install all the required gems assuming you have bundler installed.
+3. Run `ruby app.rb` to start the program.
+
+### To run tests
+
+Run the command `rspec` from the root directory.
+
+
+The Makers brief
 =================
 
 * Feel free to use google, your notes, books, etc. but work on your own
