@@ -1,5 +1,12 @@
 # Ruby Bowling Challenge
 
+<p align="left">
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/ruby/ruby-original.svg" alt="ruby" width="40" height="40"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/rspec/rspec-original.svg" alt="rspec" width="40" height="40"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg" alt="git" width="40" height="40"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg" alt="github" width="40" height="40"/>
+</p>
+
 ## Makers Academy Week 5 Weekend Challenge
 
 This is the final Ruby challenge of the Makers Software Engineering course. The challenge is to write a program that can calculate the score of a bowling game for one player. The program should be able to handle all the rules of bowling, including strikes and spares.
@@ -18,6 +25,11 @@ This is an unfinished individual challenge. I made the decision to focus on othe
 
 Run the command `rspec` from the root directory.
 
+### Example use
+
+Screenshot of basic CLI interface:
+
+<img src="images/example-use.png" alt="example cli ui" width="400"/>
 
 The Makers brief
 =================

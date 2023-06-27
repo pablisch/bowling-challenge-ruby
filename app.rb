@@ -10,12 +10,12 @@ class Application
     @game = Game.new
     3.times do
       @frame = Frame.new
-      visibility_frame_number() # VISIBILITY
+      # visibility_frame_number() # VISIBILITY
       pins_down = roll(1)
       pins_down = roll(2) if pins_down < 10
-      visibility_after_rolls() # VISIBILITY
+      # visibility_after_rolls() # VISIBILITY
       @game.add_frame(@frame)
-      visibility_game_and_frame()
+      # visibility_game_and_frame() # VISIBILITY
     end
     @game.scores_on_the_doors()
   end

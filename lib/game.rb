@@ -18,13 +18,10 @@ class Game
       frame_score = frame.roll_1_pins + frame.roll_2_pins
       if frame.strike_bonus_2 == 1
         frame_score += frames[index + 1].roll_1_pins
-        if 
       end
-
-
-
       p frame.roll_1_pins
       p frame.roll_2_pins
     end
   end
+
 end
